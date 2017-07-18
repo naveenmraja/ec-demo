@@ -1,0 +1,15 @@
+.list-item {
+    padding: 15px !important;
+    -webkit-transition: background-color .25s ease .1s, color .25s ease .1s, padding-left .25s ease .1s !important;
+    -moz-transition: background-color .25s ease .1s, color .25s ease .1s, padding-left .25s ease .1s !important;
+    -o-transition: background-color .25s ease .1s, color .25s ease .1s, padding-left .25s ease .1s !important;
+    transition: background-color .25s ease .1s, color .25s ease .1s, padding-left .25s ease .1s !important;
+    color: #2185D0 !important;
+    font-weight: lighter !important;
+}
+
+.list-item:hover {
+    padding-left: 25px !important;
+    background-color: #F9F9F9 !important;
+    color : #1f7ec7 !important; 
+}

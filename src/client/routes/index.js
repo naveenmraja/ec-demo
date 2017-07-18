@@ -8,6 +8,11 @@ import rootReducer from '../reducers/index'
 
 import Layout from '../containers/Layout'
 import HomeView from '../containers/HomeView'
+import PaymentOptionsView from '../containers/PaymentOptionsView'
+import APIPaymentMethodsView from '../containers/APIPaymentMethodsView'
+import CardPaymentView from '../containers/CardPaymentView'
+import NetBankingPaymentView from '../containers/NetBankingPaymentView'
+import WalletPaymentView from '../containers/WalletPaymentView'
 
 const store = createStore(
 	rootReducer,
@@ -19,6 +24,11 @@ var routes = (
 		<Router history={browserHistory}>
 			<Route path='/' component={Layout}>
 				<IndexRoute component={HomeView} />
+				<Route path='/orders/:orderId/paymentoptions' component={PaymentOptionsView}/>
+				<Route path='/orders/:orderId/api/paymentmethods' component={APIPaymentMethodsView} />
+				<Route path='/orders/:orderId/api/pay/card' component={CardPaymentView} />
+				<Route path='/orders/:orderId/api/pay/netbanking' component={NetBankingPaymentView} />
+				<Route path='/orders/:orderId/api/pay/wallet' component={WalletPaymentView}/>
 				<Route path='*' component={HomeView} />
 			</Route>
 		</Router>

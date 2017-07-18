@@ -1,0 +1,49 @@
+body {
+	background: #F9F9F9;
+}
+
+.layout {
+	height: 100% !important;
+	position: relative;
+	max-width: 600px;
+	margin: 0 auto;
+	overflow-x: auto;
+	overflow-y: auto; 
+	font-family: 'Avenir LT W01_35 Light1475496';
+	color: #222;
+	background: #ffffff !important;
+}
+
+.app {
+	height: 83%;
+	overflow-y: auto;
+	overflow-x: auto;
+	position: relative;
+	background: #fff;
+	width: 100%;
+}
+
+.primary-color {
+	background: #333F4C !important;
+}
+
+.header-footer-main {
+	margin : 0 auto !important;
+	color: #ffffff !important;
+}
+
+.header-element {
+	margin-top: 1% !important;
+	cursor: pointer !important;
+	color: #ffffff !important;
+}
+
+.footer-element {
+	background: #28313c !important;
+	cursor: pointer !important;
+}
+
+.message-juspay {
+	background: #FCFFBF !important;
+	margin-top: 0px !important;
+}

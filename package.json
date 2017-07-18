@@ -1,11 +1,12 @@
 {
-  "name": "react-skeleton",
+  "name": "ec-demo",
   "version": "1.0.0",
-  "description": "",
+  "description": "Demo app for Juspay's Express Checkout",
   "main": "index.js",
   "scripts": {
-    "client": "webpack-dev-server --hot --inline --history-api-fallback --content-base src/client/public --progress --colors --port 7999",
-    "build": "webpack -p --config webpack.config.js --profile --progress --colors"
+    "client": "webpack-dev-server --hot --inline --history-api-fallback --content-base src/server/templates --progress --colors --port 5000",
+    "build": "webpack -p --config webpack.config.js --profile --progress --colors",
+    "server" : "python src/server/app.py"
   },
   "author": "",
   "license": "ISC",
@@ -17,11 +18,14 @@
     "babel-preset-react": "6.24.1",
     "css-loader": "0.28.4",
     "file-loader": "0.11.2",
+    "nodemon": "1.11.0",
     "style-loader": "0.18.2",
     "webpack": "3.0.0",
     "webpack-dev-server": "2.5.0"
   },
   "dependencies": {
+    "body-parser": "1.17.2",
+    "express": "4.15.3",
     "react": "15.6.1",
     "react-dom": "15.6.1",
     "react-redux": "5.0.5",

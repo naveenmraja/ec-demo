@@ -1,6 +1,11 @@
+.outer-layout {
+    min-height: 100% !important;
+}
+
 .card-container {
 	max-width: 95% !important;
 	margin : 20px auto;
+    min-height: 100% !important;
 }
 
 .saved-card-desc {
@@ -29,8 +34,8 @@
 .cvv-class {
 	width: 50%;
     display: inline-block;
-    vertical-align: top;
     padding-left: 10px;
+    margin-top: 20px;
 }
 
 .card-container-label {
@@ -46,8 +51,15 @@
 }
 
 .expiry-dropdown {
-	max-width: 70px;
-	margin: 10px;
+	max-width: 70px !important;
+    margin-right: 5px !important;
+    display: inline-block;
+}
+
+.card-icon {
+    display: inline-block !important;
+    margin-top: -60px !important;
+    float: right !important;
 }
 
 .placeholder {

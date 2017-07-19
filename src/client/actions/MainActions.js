@@ -143,14 +143,12 @@ const setActiveTab = (data) => {
 }
 
 const updateCardNumber = (data) => {
-	console.log('updating card number', data)
 	return function(dispatch, getState) {
 		dispatch(onUpdateCardNumber(data))
 	}
 }
 
 const updateCardToken = (data) => {
-	console.log('updating card token - ', data)
 	return function(dispatch, getState) {
 		dispatch(onUpdateCardToken(data))
 	}
@@ -169,7 +167,6 @@ const updateCardExpiryYear = (data) => {
 }
 
 const updateCardSecurityCode = (data) => {
-	console.log('updating card security code' - data)
 	return function(dispatch, getState) {
 		dispatch(onUpdateCardSecurityCode(data))
 	}

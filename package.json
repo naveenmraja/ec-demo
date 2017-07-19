@@ -4,7 +4,7 @@
   "description": "Demo app for Juspay's Express Checkout",
   "main": "index.js",
   "scripts": {
-    "client": "webpack-dev-server --hot --inline --history-api-fallback --content-base src/server/templates --progress --colors --port 5000",
+    "client": "webpack-dev-server --hot --inline --history-api-fallback --content-base src/server --progress --colors --port 5000",
     "build": "webpack -p --config webpack.config.js --profile --progress --colors",
     "server" : "python src/server/app.py"
   },

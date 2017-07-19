@@ -47,3 +47,8 @@ body {
 	background: #FCFFBF !important;
 	margin-top: 0px !important;
 }
+
+.juspay-dimmer-loader {
+    min-height: 100% !important;
+    position: initial !important;
+}

@@ -7,13 +7,16 @@ import {
 	Input,
 	Message as SemanticMessage,
 	Button,
-	Form,
 	Dropdown,
 	Icon,
-	Checkbox
+	Image,
+	Dimmer,
+	Header,
+	Segment
 } from 'semantic-ui-react';
 import { actions as actions } from '../actions/MainActions'
 import Message from '../components/Message'
+import JuspayLoader from '../components/JuspayLoader'
 import '../styles/CardPaymentView.css'
 
 class SavedCards extends Component {
@@ -28,7 +31,6 @@ class SavedCards extends Component {
 						fluid 
 						as='a' 
 						onClick={(e) => {
-							e.preventDefault();
 							this.props.setCardState('cardToken', storedCard.token)
 							this.props.setCardState('cardSecurityCode', '')
 						}} >
@@ -45,8 +47,8 @@ class SavedCards extends Component {
 									focus={this.props.cardToken == storedCard.token} 
 									placeholder='CVV' 
 									type='password'
+									maxLength='4'
 									onChange={(e) => {
-										e.preventDefault();
 										this.props.setCardState('cardSecurityCode', e.target.value)
 									}} />
 							</span>
@@ -72,7 +74,7 @@ class SavedCards extends Component {
 				</Container>
 			)
 		}
-		if(this.props.active) {
+		if(this.props.active && !this.props.loader) {
 			return (
 				<div className='card-container'>
 					{savedCardsList}
@@ -80,7 +82,7 @@ class SavedCards extends Component {
 			)
 		} else {
 			return (
-				<div></div>
+				<div className='card-container'></div>
 			)
 		}
 	}
@@ -96,12 +98,18 @@ class NewCard extends Component {
     }
 
 	render() {
-		if(this.props.active) {
+		if(this.props.active && !this.props.loader) {
 			var expiryMonthList = this.range(1,12).map((x) => {
-	             return <Dropdown.Item text={x} />
+	             return {
+	             	text : x,
+	             	value : x
+	             }
 	        })
 	        var expiryYearList = this.range(2017,33).map((x) => {
-	        	return <Dropdown.Item text={x} />
+	        	return {
+	        		text : x,
+	        		value : x
+	        	}
 	        })
 			return (
                 <div className='card-container'>
@@ -114,33 +122,40 @@ class NewCard extends Component {
                     		value={this.props.cardDetails.cardNumber} 
                     		onChange={(e) => {
                     			e.preventDefault()
-                    			this.props.setCardState('cardNumber', e.target.value)
+                    			var cardNumber = e.target.value.replace(/ /g, '');
+								if (cardNumber.length > 0){
+									cardNumber = cardNumber.match(new RegExp('.{1,4}', 'g')).join(' ');
+								}
+                    			this.props.setCardState('cardNumber', cardNumber)
                     		}} 
                     		required/>
                     	<div className='input-label'>Card Number</div>
+                    	<Icon name='credit card alternative' size='big' className='card-icon'/>
                 	</div>
 	                <div className='month-year-class'>
 		                <div className='card-container-label'>Expiry Date</div>
-		                <Dropdown text='MM' className='expiry-dropdown'>
-		                	<Dropdown.Menu>
-		                		{expiryMonthList}
-		                	</Dropdown.Menu>
-		                </Dropdown>
-		                <Dropdown text='YYYY' className='expiry-dropdown'>
-		                	<Dropdown.Menu>
-		                		{expiryYearList}
-		                	</Dropdown.Menu>
-		                </Dropdown>
+		                	<Dropdown 
+		                		placeholder='MM' 
+		                		className='expiry-dropdown' 
+		                		selection 
+		                		scrolling 
+		                		compact
+		                		options={expiryMonthList} />
+		                	<Dropdown 
+		                		placeholder='YYYY' 
+		                		className='expiry-dropdown' 
+		                		selection 
+		                		scrolling 
+		                		compact
+		                		options={expiryYearList} />
 		            </div>
 		            <div className='cvv-class' >
 	                    <input 
 	                    	type="password" 
-	                    	inputMode="numeric" 
 	                    	className='input-area' 
 	                    	maxLength="4" 
 	                    	name="cvv" 
 	                    	onChange={(e)=>{
-	                    		e.preventDefault()
 	                    		this.props.setCardState('cardSecurityCode', e.target.value)
 	                    	}} 
 	                    	required/>
@@ -148,7 +163,6 @@ class NewCard extends Component {
 	                </div>
 	                <div className='card-container-label'>
 				   		<input type="checkbox" onChange = {(e) => {
-				   			e.preventDefault()
 				   			this.props.setCardState('saveToLocker',e.target.checked)
 				   		}} /> Save card information
 					</div>
@@ -157,7 +171,7 @@ class NewCard extends Component {
 			)
 		} else {
 			return (
-				<div></div>
+				<div className='card-container'></div>
 			)
 		}
 	}
@@ -174,7 +188,8 @@ const mapStateToProps = (state) => ({
 	cardExpiryMonth : state.cardDetails.cardExpiryMonth,
 	cardExpiryYear : state.cardDetails.cardExpiryYear,
 	cardSecurityCode : state.cardDetails.cardSecurityCode,
-	nameOnCard : state.cardDetails.nameOnCard
+	nameOnCard : state.cardDetails.nameOnCard,
+	loader : state.cardDetails.loader
 })
 
 class CardPaymentView extends Component {
@@ -192,6 +207,7 @@ class CardPaymentView extends Component {
 	}
 
 	setCardState = (key, value) => {
+		console.log('setCardState - key : ', key,'value : ', value)
 		switch(key) {
 			case 'cardNumber' : 
 				this.props.updateCardNumber(value);
@@ -230,7 +246,10 @@ class CardPaymentView extends Component {
 		}
 		var tagline = 'Please enter your card details to proceed. Total amount payable: \u20b9 ' + this.props.amount
 		return (
-			<div>
+			<Dimmer.Dimmable as={Container} dimmed={this.props.loader} className='juspay-dimmer-loader'>
+				<JuspayLoader 
+					active={this.props.loader} 
+					message='Fetching saved cards. Please wait...'/>
 				<Message 
 					message={tagline} />
 				<Menu 
@@ -253,13 +272,15 @@ class CardPaymentView extends Component {
 					cards={this.props.storedCards} 
 					cardToken={this.props.cardToken} 
 					handlePayment={this.handlePayment} 
-					setCardState={this.setCardState} />
+					setCardState={this.setCardState}
+					loader={this.props.loader} />
 				<NewCard 
 					active={this.props.activeTab == 'new_card'} 
 					cardDetails={cardDetails} 
 					handlePayment={this.handlePayment} 
-					setCardState={this.setCardState} />
-			</div>
+					setCardState={this.setCardState}
+					loader={this.props.loader} />
+			</Dimmer.Dimmable>
 		);
 	}
 }

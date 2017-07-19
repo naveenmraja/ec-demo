@@ -1,19 +1,20 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import {
-	Button
+	Button,
+	Dimmer,
+	Container
 } from 'semantic-ui-react'
 import { browserHistory } from 'react-router'
-
 import {
 	CREATING,
-	NEW,
-	INVALID
+	NEW
 } from '../constants/Status'
 import { 
 	actions as actions 
 } from '../actions/MainActions'
 import Message from '../components/Message'
+import JuspayLoader from '../components/JuspayLoader'
 import '../styles/HomeView.css'
 
 const mapStateToProps = (state) => ({
@@ -86,7 +87,10 @@ class HomeView extends Component {
 			invalidAmountMessage = 'Error occured ! Please enter a valid amount'
 		}
 		return (
-			<div>
+			<Dimmer.Dimmable as={Container} className='juspay-dimmer-loader'>
+				<JuspayLoader 
+					active={this.props.status == CREATING} 
+					message='Creating an order with Juspay. Please wait...'/>
 				<Message 
 					message="Welcome to Juspay's EC demo ! Please create your order." 
 					icon='smile'/>
@@ -146,10 +150,9 @@ class HomeView extends Component {
 					content='Continue' 
 					icon='right arrow' 
 					labelPosition='right' 
-					loading={this.props.status == CREATING} 
-					disabled={this.props.status != INVALID} 
+					disabled={this.props.status == CREATING} 
 					onClick={this.handleClick} />
-			</div>
+			</Dimmer.Dimmable>
 		);
 	}
 }

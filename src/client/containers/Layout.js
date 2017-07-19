@@ -1,11 +1,15 @@
 import React, { Component } from 'react'
-
+import { connect } from 'react-redux';
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import '../styles/core.css'
 
 
-export default class Layout extends Component {
+const mapStateToProps = (state) => ({
+	orderId : state.orderDetails.orderId
+})
+
+class Layout extends Component {
 
 	constructor(props) {
 		super(props)
@@ -14,7 +18,7 @@ export default class Layout extends Component {
 	render() {
 		return (
 			<div className='layout'>
-				<Header />
+				<Header location={this.props.location} orderId={this.props.orderId}/>
 				<div className='app'>
 					{this.props.children}
 				</div>
@@ -23,3 +27,5 @@ export default class Layout extends Component {
 		);
 	}
 }
+
+export default connect(mapStateToProps)(Layout)
